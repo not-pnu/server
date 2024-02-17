@@ -18,7 +18,7 @@ COPY ./ ./
 RUN yarn build
 
 # 애플리케이션 실행
-CMD ["yarn", "start"]
+CMD ["yarn", "server"]
 
 # 포트 8000번 열기
 EXPOSE 8000

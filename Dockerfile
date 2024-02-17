@@ -18,7 +18,7 @@ COPY ./ ./
 RUN yarn build
 
 # 애플리케이션 실행
-CMD ["pm2-runtime", "start", "yarn", "--name", "my-app", "--", "start"]
+RUN yarn docker
 
 # 포트 8000번 열기
 EXPOSE 8000

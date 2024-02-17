@@ -23,6 +23,7 @@
     "server:dev": "nodemon --exec ts-node ./src/app.ts",
     "start": "pm2 start dist/app.js --name 'my-app'",
     "start:dev": "pm2 start src/app.ts --interpreter='ts-node' --name 'my-app-dev'",
+    "docker": "pm2-runtime start dist/app.js --name 'my-app-docker'",
     "stop": "pm2 stop 'my-app'",
     "delete": "pm2 delete 'my-app'",
     "restart": "pm2 restart 'my-app'",

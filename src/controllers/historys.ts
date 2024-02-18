@@ -2,9 +2,9 @@ import axios from "axios";
 import { RequestHandler } from "express";
 
 export const getDevHistorys: RequestHandler = async (__, res) => {
-  const owner = process.env.GITHUB_OWNER;
-  const repo = process.env.GITHUB_REPO;
-  const token = process.env.GITHUB_REPO_ACCESS_TOKEN;
+  const owner = process.env.APP_GITHUB_OWNER;
+  const repo = process.env.APP_GITHUB_REPO;
+  const token = process.env.APP_GITHUB_REPO_ACCESS_TOKEN;
 
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/commits`;
 

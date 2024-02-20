@@ -30,7 +30,7 @@ export const postRegisterUser: RequestHandler = async (req, res) => {
 
   // check email validation.
   try {
-    await sendEmailValidation(email);
+    await sendEmailValidation(email, department);
     const startTime = new Date();
     startTime.setHours(startTime.getHours() + 9);
     console.log(`[Subscribing] ${email}:${department} (${startTime})`);

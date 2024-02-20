@@ -217,11 +217,11 @@ async function sendEmailFor(
 }
 
 // send email validation.
-export async function sendEmailValidation(email: string) {
+export async function sendEmailValidation(email: string, department: string) {
   const mailOptions = {
     from: process.env.APP_TITLE,
     to: email,
-    subject: `[${process.env.APP_TITLE}] 이메일 검증 안내`,
+    subject: `[${process.env.APP_TITLE}][${department}] 이메일 검증 안내`,
     html: `<div style="gap: 10px">
                 다음 버튼을 눌러 최종적으로 메일을 검증해주시기 바랍니다.
                 </br>

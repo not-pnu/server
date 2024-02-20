@@ -9,7 +9,7 @@ class Department {
   code: string;
   name: string;
   url: string;
-  boards: number[];
+  boards: string[];
   board_names: string[];
 
   constructor(code: string, name: string, url: string) {
@@ -37,7 +37,7 @@ const DepartmentSchema: Schema = new Schema({
     required: true,
   },
   boards: {
-    type: [Number],
+    type: [String],
     default: [],
   },
   board_names: {

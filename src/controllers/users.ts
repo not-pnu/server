@@ -50,6 +50,7 @@ export const postRegisterUser: RequestHandler = async (req, res) => {
 };
 
 export const getValidateEmail: RequestHandler = async (req, res) => {
+  console.log("get validate email");
   const { email } = req.params;
   const redisClient = getRedisClient();
 
@@ -62,6 +63,7 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
       }
       return code;
     });
+    console.log(code, email);
     if (!code) {
       throw new Error();
     }
@@ -71,6 +73,7 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       type: "ERROR",
       message:
@@ -93,7 +96,7 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
     if (!department) {
       throw new Error("Department not found.");
     }
-
+    console.log(department);
     // save email to MongoDB.
     const newEmail = new User({
       email: email,

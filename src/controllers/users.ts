@@ -109,7 +109,7 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
     res.redirect(
       `${
         process.env.NODE_ENV === "production"
-          ? process.env.PRODUCTION_URL
+          ? process.env.MAILBADARA_HOMEPAGE_URL
           : process.env.DEVELOPMENT_URL
       }/validation/${email}`
     );

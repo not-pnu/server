@@ -4,16 +4,15 @@ import User from "../models/User";
 import Department from "../models/Department";
 
 import {
-  isValid,
-  isExistingEmail,
-  sendEmailValidation,
-  sendSubscritionSuccessEmail,
-} from "../utils/util";
-import { getRedisClient } from "../utils/redisClient";
+    isValid,
+    isExistingEmail,
+    sendEmailValidation,
+    sendSubscritionSuccessEmail,
+} from '../utils/util';
+import {emailQueue} from '../lib/EmailQueue';
 
 export const postRegisterUser: RequestHandler = async (req, res) => {
   const { email, department } = req.body;
-  const redisClient = getRedisClient();
 
   if (!isValid(email)) {
     return res.json({ type: "ERROR", message: "Invalid email." });
@@ -34,11 +33,8 @@ export const postRegisterUser: RequestHandler = async (req, res) => {
     const startTime = new Date();
     startTime.setHours(startTime.getHours() + 9);
     console.log(`[Subscribing] ${email}:${department} (${startTime})`);
-    await redisClient.set(email, department, "EX", 10 * 60, (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-    });
+
+    emailQueue.addToQueue({ email, department });
     return res.json({
       type: "SUCCESS",
       message: `이메일 검증을 위해 귀하(${email})의 메일함을 확인해주시기 바랍니다:) 메일함에 메일이 오지 않았다면 스팸메일함을 확인해보시기 바랍니다:)`,
@@ -52,26 +48,22 @@ export const postRegisterUser: RequestHandler = async (req, res) => {
 export const getValidateEmail: RequestHandler = async (req, res) => {
   console.log("get validate email");
   const { email } = req.params;
-  const redisClient = getRedisClient();
 
   let code: string = "";
   // check if email exist in waiting queue.
   try {
-    code = await redisClient.get(email, (err, code) => {
-      if (err) {
-        throw new Error(err);
+      if (!emailQueue.isEmailInQueue(email)) {
+            return res.status(500).json({
+                type: "ERROR",
+                message: "Your email does not exist in the waiting queue.",
+            });
       }
-      return code;
-    });
+    code = emailQueue.popLeft().department;
     console.log(code, email);
     if (!code) {
       throw new Error();
     }
-    redisClient.del(email, (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-    });
+    emailQueue.removeFromQueue(email);
   } catch (error) {
     console.error(error);
     return res.status(500).json({

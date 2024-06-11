@@ -5,6 +5,6 @@ import { getDevHistorys } from "../controllers/historys";
 const router = Router();
 
 // Endpoint: Get project commit history.
-router.get("/api/history", getDevHistorys);
+router.get("", getDevHistorys);
 
 export default router;

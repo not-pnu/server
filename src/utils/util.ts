@@ -161,7 +161,7 @@ async function sendEmailFor(
         process.env.NODE_ENV === "production"
           ? process.env.PRODUCTION_URL
           : process.env.DEVELOPMENT_URL
-      }">Unsubscribe</a>
+      }/unsubscribe/${user.email}">Unsubscribe</a>
     </div>`;
 
   // if there is no new post, return.

@@ -133,7 +133,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
     // delete email in database.
     await User.deleteOne({ email });
-    return res.json({ type: "SUCCESS", message: "Delete user information" });
+    return res.json({ type: "SUCCESS", message: "구독 취소가 완료되었습니다!" });
   } catch (error) {
     console.error(error);
     return res.status(503).json({ type: "ERROR", message: "Server error!" });

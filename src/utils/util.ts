@@ -161,7 +161,7 @@ async function sendEmailFor(
         process.env.NODE_ENV === "production"
           ? process.env.PRODUCTION_URL
           : process.env.DEVELOPMENT_URL
-      }/unsubscribe/${user.email}">Unsubscribe</a>
+      }/api/user/unsubscribe/${user.email}">Unsubscribe</a>
     </div>`;
 
   // if there is no new post, return.
@@ -268,9 +268,9 @@ export async function sendSubscritionSuccessEmail(
     <div style="text-align: center; margin: 20px">
       <a href="${
         process.env.NODE_ENV === "production"
-          ? process.env.PRODUCTION_URL
-          : process.env.DEVELOPMENT_URL
-      }">Unsubscribe</a>
+            ? process.env.PRODUCTION_URL
+            : process.env.DEVELOPMENT_URL
+    }/api/user/unsubscribe/${email}">Unsubscribe</a>
     </div>`,
   };
 

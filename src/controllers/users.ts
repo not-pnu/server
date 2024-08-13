@@ -106,7 +106,7 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
         process.env.NODE_ENV === "production"
           ? process.env.MAILBADARA_HOMEPAGE_URL
           : process.env.DEVELOPMENT_URL
-      }/validation/${email}`
+      }/validation?email=${email}`
     );
   } catch (error) {
     console.error(error);

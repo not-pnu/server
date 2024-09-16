@@ -133,9 +133,13 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
     // delete email in database.
     await User.deleteOne({ email });
-    return res.json({ type: "SUCCESS", message: "구독 취소가 완료되었습니다!" });
+    return res.redirect(`${process.env.NODE_ENV === "production"
+        ? process.env.MAILBADARA_HOMEPAGE_URL
+        : process.env.DEVELOPMENT_URL}/unsubscribe`);
   } catch (error) {
     console.error(error);
-    return res.status(503).json({ type: "ERROR", message: "Server error!" });
+    return res.redirect(`${process.env.NODE_ENV === "production"
+        ? process.env.MAILBADARA_HOMEPAGE_URL
+        : process.env.DEVELOPMENT_URL}/not-found`);
   }
 };

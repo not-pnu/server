@@ -10,6 +10,7 @@ import {
     sendSubscritionSuccessEmail,
 } from '../utils/util';
 import {emailQueue} from '../lib/EmailQueue';
+import department from '../models/Department';
 
 export const postRegisterUser: RequestHandler = async (req, res) => {
   const { email, department } = req.body;
@@ -53,34 +54,31 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
   // check if email exist in waiting queue.
   try {
       if (!emailQueue.isEmailInQueue(email)) {
-            return res.status(500).json({
-                type: "ERROR",
-                message: "Your email does not exist in the waiting queue.",
-            });
+          console.log(`[NOT_IN_QUEUE] ${email} is not exist in queue!!`);
+          return res.redirect(`${process.env.NODE_ENV === "production"
+              ? process.env.MAILBADARA_HOMEPAGE_URL
+              : process.env.DEVELOPMENT_URL}/not-found`);
       }
     code = emailQueue.popLeft().department;
     console.log(code, email);
     if (!code) {
-      throw new Error();
+      throw new Error("While checking your email exist in waiting queue, Error occured.");
     }
     emailQueue.removeFromQueue(email);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      type: "ERROR",
-      message:
-        "Server error! While checking your email exist in waiting queue, Error occured.",
-      error,
-    });
+      return res.redirect(`${process.env.NODE_ENV === "production"
+          ? process.env.MAILBADARA_HOMEPAGE_URL
+          : process.env.DEVELOPMENT_URL}/not-found`);
   }
 
   // check if email exist in database.
   const existingEmail = await isExistingEmail(email);
   if (existingEmail) {
-    return res.status(500).json({
-      type: "ERROR",
-      message: "Your email already exists in the database.",
-    });
+      console.log(`[Duplicated] ${email} is exist already subscribed to ${department}.!!`);
+      return res.redirect(`${process.env.NODE_ENV === "production"
+          ? process.env.MAILBADARA_HOMEPAGE_URL
+          : process.env.DEVELOPMENT_URL}/already-subscribe`);
   }
 
   try {
@@ -110,7 +108,9 @@ export const getValidateEmail: RequestHandler = async (req, res) => {
     );
   } catch (error) {
     console.error(error);
-    return res.status(502).json({ type: "ERROR", message: "Server error!" });
+      return res.redirect(`${process.env.NODE_ENV === "production"
+          ? process.env.MAILBADARA_HOMEPAGE_URL
+          : process.env.DEVELOPMENT_URL}/not-found`);
   }
 };
 

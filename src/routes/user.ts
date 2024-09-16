@@ -15,6 +15,6 @@ router.post("/subscribe", postRegisterUser);
 router.get("/validation/:email", getValidateEmail);
 
 // Endpoint: Email Delete
-router.delete("/unsubscribe/:email", deleteUser);
+router.get("/unsubscribe/:email", deleteUser);
 
 export default router;

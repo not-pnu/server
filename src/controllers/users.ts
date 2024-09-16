@@ -118,17 +118,20 @@ export const deleteUser: RequestHandler = async (req, res) => {
   const { email } = req.params;
 
   if (!isValid(email)) {
-    return res.json({ type: "ERROR", message: "Invalid email." });
+      console.log(`[ERROR] ${email} is invalid!!!`)
+      return res.redirect(`${process.env.NODE_ENV === "production"
+          ? process.env.MAILBADARA_HOMEPAGE_URL
+          : process.env.DEVELOPMENT_URL}/not-found`);
   }
 
   // check if email already subscribed.
   try {
     const existingEmail = await isExistingEmail(email);
     if (!existingEmail) {
-      return res.json({
-        type: "NONE",
-        message: `${email} is not subscribed.`,
-      });
+        console.log(`[NOT_SUBSCRIBE] ${email} is not subscribed.`)
+        return res.redirect(`${process.env.NODE_ENV === "production"
+            ? process.env.MAILBADARA_HOMEPAGE_URL
+            : process.env.DEVELOPMENT_URL}/not-found`);
     }
 
     // delete email in database.
